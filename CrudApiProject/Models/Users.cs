@@ -6,15 +6,17 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Text.RegularExpressions;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CrudApiProject.Models
 {
   public class Users
   {
-
+    
     [Key]
+    [Column( name:  "user_id" )]
     public int Id { get; set; }
-
+   
     public string username { get; set; }
     [StringLength( 30, ErrorMessage = "First name cannot be longer than 30 characters." )]
     public string? first_name { get; set; }

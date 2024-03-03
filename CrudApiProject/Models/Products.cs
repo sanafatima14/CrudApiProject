@@ -14,8 +14,8 @@ namespace CrudApiProject.Models
     public string name { get; set; }
     [StringLength( 400 )]
     public string description {  get; set; }
-    public int actual_price { get; set; }
-    public int selling_price { get; set; }
+    public float actual_price { get; set; }
+    public float selling_price { get; set; }
     [Required]
     [Range( 1, int.MaxValue)]
     public int available_quantity { get; set; }

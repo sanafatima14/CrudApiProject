@@ -4,6 +4,7 @@ using CrudApiProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CrudApiProject.Migrations
 {
     [DbContext(typeof(APIDemoDbClass))]
-    partial class APIDemoDbClassModelSnapshot : ModelSnapshot
+    [Migration("20240227072234_three")]
+    partial class three
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,8 +40,8 @@ namespace CrudApiProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("total_cost")
-                        .HasColumnType("real");
+                    b.Property<int>("total_cost")
+                        .HasColumnType("int");
 
                     b.Property<int>("user_id")
                         .HasColumnType("int");
@@ -59,8 +62,8 @@ namespace CrudApiProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<float>("actual_price")
-                        .HasColumnType("real");
+                    b.Property<int>("actual_price")
+                        .HasColumnType("int");
 
                     b.Property<int>("available_quantity")
                         .HasColumnType("int");
@@ -75,8 +78,8 @@ namespace CrudApiProject.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<float>("selling_price")
-                        .HasColumnType("real");
+                    b.Property<int>("selling_price")
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 
@@ -196,24 +199,24 @@ namespace CrudApiProject.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CrudApiProject.Models.order_products", b =>
+            modelBuilder.Entity("CrudApiProject.Models.orderProducts", b =>
                 {
-                    b.Property<int>("order_id")
+                    b.Property<int>("Order_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("product_id")
+                    b.Property<int>("Product_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Product_quantity")
                         .HasColumnType("int");
 
                     b.Property<int>("orderid")
                         .HasColumnType("int");
 
-                    b.Property<int>("product_quantity")
-                        .HasColumnType("int");
-
                     b.Property<int>("productid")
                         .HasColumnType("int");
 
-                    b.HasKey("order_id", "product_id");
+                    b.HasKey("Order_id", "Product_id");
 
                     b.HasIndex("orderid");
 
@@ -226,12 +229,14 @@ namespace CrudApiProject.Migrations
                 {
                     b.HasOne("CrudApiProject.Models.Users", "user")
                         .WithOne()
-                        .HasForeignKey("CrudApiProject.Models.Orders", "user_id");
+                        .HasForeignKey("CrudApiProject.Models.Orders", "user_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("CrudApiProject.Models.order_products", b =>
+            modelBuilder.Entity("CrudApiProject.Models.orderProducts", b =>
                 {
                     b.HasOne("CrudApiProject.Models.Orders", "order")
                         .WithMany()

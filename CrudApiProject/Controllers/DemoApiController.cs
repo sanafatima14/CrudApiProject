@@ -150,10 +150,14 @@ namespace CrudApiProject.Controllers
     [HttpPost]
     [Authorize( Roles = "Admin" )]
     [Route( "create-order" )]
-    public async Task<IActionResult> PostOrderProductAsync( Orders order )
-    {
+    public async Task<IActionResult> PostOrderAsync( Orders order )
       
-          _apiDemoDbClass.Orders.Add( order );
+    {
+      //_apiDemoDbClass.Orders.Include( h => h.user);
+      var a = _apiDemoDbClass.Orders.Include( a => a.user  ).FirstOrDefault( a => a.user_id == order.user_id );
+      order.user = a.user; // Access the related book
+
+      _apiDemoDbClass.Orders.Add( order );
           await _apiDemoDbClass.SaveChangesAsync();
           return Created( $"/order/{order.id}", order );
         
@@ -208,8 +212,8 @@ namespace CrudApiProject.Controllers
     [Route( "get-order_products-list" )]
     public async Task<IActionResult> GetOrderProductsAsync()
     {
-      var order_products = await _apiDemoDbClass.orderProducts.ToListAsync();
-      return Ok( order_products );
+      var orderproducts = await _apiDemoDbClass.orderProducts.ToListAsync();
+      return Ok( orderproducts );
     }
 
     [HttpGet]
@@ -220,17 +224,17 @@ namespace CrudApiProject.Controllers
       {
         return BadRequest( ModelState );
       }
-      var order_products = await _apiDemoDbClass.orderProducts.FindAsync( Order_id, Product_id );
-      return Ok( order_products );
+      var orderproducts = await _apiDemoDbClass.orderProducts.FindAsync( Order_id, Product_id );
+      return Ok( orderproducts );
 
       }
     [HttpPost]
     [Route( "create-order_products" )]
     [Authorize(Roles ="User")]
-    public async Task<IActionResult> PostOrderProductsAsync( orderProducts order_products )
+    public async Task<IActionResult> PostOrderProductsAsync( order_products orderproducts )
     {
       SqlConnection con = new SqlConnection( _configuration.GetConnectionString( "DbConnection" ).ToString() );
-      SqlDataAdapter adapter = new SqlDataAdapter( "select available_quantity from products where products.id=" + order_products.Product_id, con );
+      SqlDataAdapter adapter = new SqlDataAdapter( "select available_quantity from products where products.id=" + orderproducts.product_id, con );
       DataTable dt = new DataTable();
       adapter.Fill( dt );
       Models.Response response = new Models.Response();
@@ -241,11 +245,11 @@ namespace CrudApiProject.Controllers
         var x = dt.Rows[ 0 ].Field<int>( "available_quantity" );
 
 
-        if ( dt.Rows[0].Field<int >("available_quantity")>order_products.Product_quantity )
+        if ( dt.Rows[0].Field<int >("available_quantity")>orderproducts.product_quantity )
         {
-          _apiDemoDbClass.orderProducts.Add( order_products );
+          _apiDemoDbClass.orderProducts.Add( orderproducts );
           await _apiDemoDbClass.SaveChangesAsync();
-          return Created( $"/orderProduct-by-id/{order_products.Order_id}", order_products );
+          return Created( $"/orderProduct-by-id/{orderproducts.order_id}", orderproducts );
         }
       }
       else
@@ -270,7 +274,7 @@ namespace CrudApiProject.Controllers
 
     [HttpPut]
     [Route( "update-order_products" )]
-    public async Task<IActionResult> PutOrderProductsAsync( orderProducts orderProductsToUpdate )
+    public async Task<IActionResult> PutOrderProductsAsync( order_products orderProductsToUpdate )
     {
       _apiDemoDbClass.orderProducts.Update( orderProductsToUpdate );
       await _apiDemoDbClass.SaveChangesAsync();
