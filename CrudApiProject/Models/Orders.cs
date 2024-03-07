@@ -9,10 +9,10 @@ namespace CrudApiProject.Models
 {
   public class Orders
   {
-    
+
     [Key]
     public int id { get; set; }
- 
+
     public int user_id { get; set; }
     [System.Text.Json.Serialization.JsonIgnore( Condition = JsonIgnoreCondition.Always )]
     [ForeignKey( "user_id" )]

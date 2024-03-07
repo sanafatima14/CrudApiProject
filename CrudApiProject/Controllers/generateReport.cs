@@ -44,11 +44,11 @@ namespace CrudApiProject.Controllers
         for ( int i = 0; i < dt.Rows.Count; i++ )
         {
           Report u = new Report();
-          u.product_quantity = Convert.ToString( dt.Rows[ i ][ "Product_quantity" ] );
+          u.product_quantity = Convert.ToInt32( dt.Rows[ i ][ "Product_quantity" ] );
           u.first_name = Convert.ToString( dt.Rows[ i ][ "first_name" ] );
           u.last_name = Convert.ToString( dt.Rows[ i ][ "last_name" ] );
           u.name = Convert.ToString( dt.Rows[ i ][ "name" ] );
-          u.OrderId = Convert.ToInt32( dt.Rows[ i ][ "orderID" ] );
+          u.order_id = Convert.ToInt32( dt.Rows[ i ][ "OrderId" ] );
 
           report.Add( u );
         }
@@ -87,17 +87,11 @@ namespace CrudApiProject.Controllers
         for(int i = 0; i < dt.Rows.Count; i++ )
         {
           Report u = new Report();
-          u.product_quantity = Convert.ToString( dt.Rows[ i ][ "Product_quantity" ] );
+          u.product_quantity = Convert.ToInt32( dt.Rows[ i ][ "product_quantity" ] );
           u.first_name = Convert.ToString( dt.Rows[ i ][ "first_name" ] );
           u.last_name = Convert.ToString( dt.Rows[ i ][ "last_name" ] );
           u.name = Convert.ToString( dt.Rows[ i ][ "name" ] );
-          u.OrderId = Convert.ToInt32( dt.Rows[ i ][ "orderID" ] );
-          //u.username = Convert.ToString( dt.Rows[ i ][ "username" ] );
-          //u.first_name = Convert.ToString( dt.Rows[ i ][ "first_name" ] );
-          //u.last_name = Convert.ToString( dt.Rows[ i ][ "last_name" ] );
-          //u.email = Convert.ToString( dt.Rows[ i ][ "email" ] );
-          //u.password = Convert.ToString( dt.Rows[ i ][ "password" ] );
-          //u.role = Convert.ToString( dt.Rows[ i ][ "role" ] );
+          u.order_id = Convert.ToInt32( dt.Rows[ i ][ "OrderId" ] );
           report.Add( u );  
         }
       }
@@ -131,11 +125,11 @@ namespace CrudApiProject.Controllers
         for ( int i = 0; i < dt.Rows.Count; i++ )
         {
           Report u = new Report();
-          u.product_quantity = Convert.ToString( dt.Rows[ i ][ "Product_quantity" ] );
+          u.product_quantity = Convert.ToInt32( dt.Rows[ i ][ "product_quantity" ] );
           u.first_name = Convert.ToString( dt.Rows[ i ][ "first_name" ] );
           u.last_name = Convert.ToString( dt.Rows[ i ][ "last_name" ] );
           u.name = Convert.ToString( dt.Rows[ i ][ "name" ] );
-          u.OrderId = Convert.ToInt32( dt.Rows[ i ][ "orderID" ] );
+          u.order_id = Convert.ToInt32( dt.Rows[ i ][ "OrderId" ] );
           report.Add( u );
         }
       }
@@ -170,11 +164,11 @@ namespace CrudApiProject.Controllers
         for ( int i = 0; i < dt.Rows.Count; i++ )
         {
           Report u = new Report();
-          u.product_quantity = Convert.ToString( dt.Rows[ i ][ "Product_quantity" ] );
+          u.product_quantity = Convert.ToInt32( dt.Rows[ i ][ "product_quantity" ] );
           u.first_name = Convert.ToString( dt.Rows[ i ][ "first_name" ] );
           u.last_name = Convert.ToString( dt.Rows[ i ][ "last_name" ] );
           u.name = Convert.ToString( dt.Rows[ i ][ "name" ] );
-          u.OrderId = Convert.ToInt32( dt.Rows[ i ][ "orderID" ] );
+          u.order_id = Convert.ToInt32( dt.Rows[ i ][ "OrderId" ] );
 
           report.Add( u );
         }

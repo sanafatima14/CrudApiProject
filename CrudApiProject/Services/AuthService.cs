@@ -45,8 +45,8 @@ namespace CrudApiProject.Services
         foreach ( int role in obj.RoleIds )
         {
           var userRole = new UserRole();
-          userRole.RoleId = role;
-          userRole.UserId = user.Id; 
+          userRole.role_id = role;
+          userRole.user_id = user.Id; 
           addRoles.Add( userRole );
         }
         _context.UserRoles.AddRange( addRoles );
@@ -63,9 +63,9 @@ namespace CrudApiProject.Services
     public string Login( LoginRequest loginRequest )
     {
       
-      if ( loginRequest.Username != null && loginRequest.Password != null )
+      if ( loginRequest.username != null && loginRequest.password != null )
       {
-        var user = _context.Users.SingleOrDefault( s => s.username == loginRequest.Username && s.password == loginRequest.Password );
+        var user = _context.Users.SingleOrDefault( s => s.username == loginRequest.username && s.password == loginRequest.password );
         if ( user != null )
         {
           var claims = new List<Claim> {
@@ -75,8 +75,8 @@ namespace CrudApiProject.Services
           };
 
 
-          var userRoles = _context.UserRoles.Where( u => u.UserId == user.Id );
-          var roleIds = userRoles.Select( s => s.RoleId ).ToList();
+          var userRoles = _context.UserRoles.Where( u => u.user_id == user.Id );
+          var roleIds = userRoles.Select( s => s.role_id ).ToList();
           var roles = _context.Roles.Where( r => roleIds.Contains( r.id ) ).ToList();
           foreach ( var role in roles )
           {

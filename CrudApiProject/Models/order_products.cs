@@ -10,8 +10,8 @@ namespace CrudApiProject.Models
   {
     [Key]
     [ForeignKey( "Orders" )]
-    public int order_id  { get; set; }
-  
+    public int order_id { get; set; }
+
     public virtual Orders order { get; set; }
     [ForeignKey( "Products" )]
     [Key]

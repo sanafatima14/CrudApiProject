@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CrudApiProject.Migrations
 {
     [DbContext(typeof(APIDemoDbClass))]
-    [Migration("20240224035408_eleven")]
-    partial class eleven
+    [Migration("20240307062221_1")]
+    partial class _1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,18 +40,16 @@ namespace CrudApiProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("total_cost")
-                        .HasColumnType("int");
-
-                    b.Property<int>("userId")
-                        .HasColumnType("int");
+                    b.Property<float>("total_cost")
+                        .HasColumnType("real");
 
                     b.Property<int>("user_id")
                         .HasColumnType("int");
 
                     b.HasKey("id");
 
-                    b.HasIndex("userId");
+                    b.HasIndex("user_id")
+                        .IsUnique();
 
                     b.ToTable("Orders");
                 });
@@ -64,8 +62,8 @@ namespace CrudApiProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<int>("actual_price")
-                        .HasColumnType("int");
+                    b.Property<float>("actual_price")
+                        .HasColumnType("real");
 
                     b.Property<int>("available_quantity")
                         .HasColumnType("int");
@@ -80,8 +78,8 @@ namespace CrudApiProject.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("selling_price")
-                        .HasColumnType("int");
+                    b.Property<float>("selling_price")
+                        .HasColumnType("real");
 
                     b.HasKey("id");
 
@@ -90,12 +88,6 @@ namespace CrudApiProject.Migrations
 
             modelBuilder.Entity("CrudApiProject.Models.Report", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
-
                     b.Property<string>("first_name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -108,11 +100,11 @@ namespace CrudApiProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("product_quantity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("order_id")
+                        .HasColumnType("int");
 
-                    b.HasKey("OrderId");
+                    b.Property<int>("product_quantity")
+                        .HasColumnType("int");
 
                     b.ToTable("report");
                 });
@@ -121,7 +113,8 @@ namespace CrudApiProject.Migrations
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("role_id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
@@ -146,13 +139,19 @@ namespace CrudApiProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<int>("RoleId")
+                    b.Property<int>("role_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("user_id")
                         .HasColumnType("int");
 
                     b.HasKey("id");
+
+                    b.HasIndex("role_id")
+                        .IsUnique();
+
+                    b.HasIndex("user_id")
+                        .IsUnique();
 
                     b.ToTable("UserRoles");
                 });
@@ -161,13 +160,14 @@ namespace CrudApiProject.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("first_name")
                         .HasMaxLength(30)
@@ -187,31 +187,37 @@ namespace CrudApiProject.Migrations
 
                     b.Property<string>("username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("email")
+                        .IsUnique();
+
+                    b.HasIndex("username")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CrudApiProject.Models.orderProducts", b =>
+            modelBuilder.Entity("CrudApiProject.Models.order_products", b =>
                 {
-                    b.Property<int>("Order_id")
+                    b.Property<int>("order_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Product_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Product_quantity")
+                    b.Property<int>("product_id")
                         .HasColumnType("int");
 
                     b.Property<int>("orderid")
                         .HasColumnType("int");
 
+                    b.Property<int>("product_quantity")
+                        .HasColumnType("int");
+
                     b.Property<int>("productid")
                         .HasColumnType("int");
 
-                    b.HasKey("Order_id", "Product_id");
+                    b.HasKey("order_id", "product_id");
 
                     b.HasIndex("orderid");
 
@@ -223,15 +229,31 @@ namespace CrudApiProject.Migrations
             modelBuilder.Entity("CrudApiProject.Models.Orders", b =>
                 {
                     b.HasOne("CrudApiProject.Models.Users", "user")
-                        .WithMany()
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne()
+                        .HasForeignKey("CrudApiProject.Models.Orders", "user_id")
+                        .OnDelete(DeleteBehavior.ClientCascade);
 
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("CrudApiProject.Models.orderProducts", b =>
+            modelBuilder.Entity("CrudApiProject.Models.UserRole", b =>
+                {
+                    b.HasOne("CrudApiProject.Models.Role", "role")
+                        .WithOne()
+                        .HasForeignKey("CrudApiProject.Models.UserRole", "role_id")
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+                    b.HasOne("CrudApiProject.Models.Users", "user")
+                        .WithOne()
+                        .HasForeignKey("CrudApiProject.Models.UserRole", "user_id")
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+                    b.Navigation("role");
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("CrudApiProject.Models.order_products", b =>
                 {
                     b.HasOne("CrudApiProject.Models.Orders", "order")
                         .WithMany()

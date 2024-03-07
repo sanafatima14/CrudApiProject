@@ -85,12 +85,6 @@ namespace CrudApiProject.Migrations
 
             modelBuilder.Entity("CrudApiProject.Models.Report", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
-
                     b.Property<string>("first_name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -103,11 +97,11 @@ namespace CrudApiProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("product_quantity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("order_id")
+                        .HasColumnType("int");
 
-                    b.HasKey("OrderId");
+                    b.Property<int>("product_quantity")
+                        .HasColumnType("int");
 
                     b.ToTable("report");
                 });
@@ -116,7 +110,8 @@ namespace CrudApiProject.Migrations
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("role_id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
@@ -141,13 +136,19 @@ namespace CrudApiProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<int>("RoleId")
+                    b.Property<int>("role_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("user_id")
                         .HasColumnType("int");
 
                     b.HasKey("id");
+
+                    b.HasIndex("role_id")
+                        .IsUnique();
+
+                    b.HasIndex("user_id")
+                        .IsUnique();
 
                     b.ToTable("UserRoles");
                 });
@@ -226,7 +227,25 @@ namespace CrudApiProject.Migrations
                 {
                     b.HasOne("CrudApiProject.Models.Users", "user")
                         .WithOne()
-                        .HasForeignKey("CrudApiProject.Models.Orders", "user_id");
+                        .HasForeignKey("CrudApiProject.Models.Orders", "user_id")
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("CrudApiProject.Models.UserRole", b =>
+                {
+                    b.HasOne("CrudApiProject.Models.Role", "role")
+                        .WithOne()
+                        .HasForeignKey("CrudApiProject.Models.UserRole", "role_id")
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+                    b.HasOne("CrudApiProject.Models.Users", "user")
+                        .WithOne()
+                        .HasForeignKey("CrudApiProject.Models.UserRole", "user_id")
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+                    b.Navigation("role");
 
                     b.Navigation("user");
                 });
