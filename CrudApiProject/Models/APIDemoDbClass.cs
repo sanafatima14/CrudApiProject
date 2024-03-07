@@ -26,6 +26,7 @@ namespace CrudApiProject.Models
 
 
 
+
       modelBuilder.Entity<Users>()
          .HasMany<Orders>()
          .WithOne( e => e.user ).OnDelete( DeleteBehavior.ClientCascade )

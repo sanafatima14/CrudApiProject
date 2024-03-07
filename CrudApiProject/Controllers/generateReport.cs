@@ -148,11 +148,12 @@ namespace CrudApiProject.Controllers
     [HttpGet]
 
     [Route( "get-report-daterange/{date1}/{date2}" )]
-    public String GetReportByDateRange( DateTime date1,DateTime date2 )
+    public String GetReportByDateRange( String date1,String date2 )
     {
 
       SqlConnection con = new SqlConnection( _configuration.GetConnectionString( "DbConnection" ).ToString() );
       SqlDataAdapter adapter = new SqlDataAdapter( "Exec generateReportByDateRange @date1=" + date1+ ", @date2="+date2, con );
+     
       DataTable dt = new DataTable();
       adapter.Fill( dt );
       List<Report> report = new List<Report>();
