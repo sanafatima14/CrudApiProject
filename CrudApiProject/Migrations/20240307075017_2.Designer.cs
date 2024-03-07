@@ -4,6 +4,7 @@ using CrudApiProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CrudApiProject.Migrations
 {
     [DbContext(typeof(APIDemoDbClass))]
-    partial class APIDemoDbClassModelSnapshot : ModelSnapshot
+    [Migration("20240307075017_2")]
+    partial class _2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,12 +207,20 @@ namespace CrudApiProject.Migrations
                     b.Property<int>("product_id")
                         .HasColumnType("int");
 
+                    b.Property<int>("orderid")
+                        .HasColumnType("int");
+
                     b.Property<int>("product_quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("productid")
                         .HasColumnType("int");
 
                     b.HasKey("order_id", "product_id");
 
-                    b.HasIndex("product_id");
+                    b.HasIndex("orderid");
+
+                    b.HasIndex("productid");
 
                     b.ToTable("orderProducts");
                 });
@@ -245,14 +256,14 @@ namespace CrudApiProject.Migrations
                 {
                     b.HasOne("CrudApiProject.Models.Orders", "order")
                         .WithMany()
-                        .HasForeignKey("order_id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .HasForeignKey("orderid")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CrudApiProject.Models.Products", "product")
                         .WithMany()
-                        .HasForeignKey("product_id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .HasForeignKey("productid")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("order");

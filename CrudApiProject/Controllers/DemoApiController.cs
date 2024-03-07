@@ -153,12 +153,18 @@ namespace CrudApiProject.Controllers
     public async Task<IActionResult> PostOrderAsync( Orders order )
       
     {
+
+      var blog1 = _apiDemoDbClass.Users
+                      .Where( b => b.Id == order.user_id )
+                      
+                      .FirstOrDefault();
+
       //_apiDemoDbClass.Orders.Include( h => h.user);
-      var a = _apiDemoDbClass.Orders.Include( a => a.user  ).FirstOrDefault( a => a.user_id == order.user_id );
-      order.user = a.user; // Access the related book
+      //var b = _apiDemoDbClass.Orders.Include( a => a.user ).FirstOrDefault( a => a.user_id == order.user_id );
+      order.user = blog1; // Access the related book
 
       _apiDemoDbClass.Orders.Add( order );
-          await _apiDemoDbClass.SaveChangesAsync();
+      await _apiDemoDbClass.SaveChangesAsync();
           return Created( $"/order/{order.id}", order );
         
       
@@ -232,7 +238,26 @@ namespace CrudApiProject.Controllers
     [Route( "create-order_products" )]
     [Authorize(Roles ="User")]
     public async Task<IActionResult> PostOrderProductsAsync( order_products orderproducts )
+
     {
+
+
+      var ord = _apiDemoDbClass.Orders
+                      .Where( b => b.id == orderproducts.order_id )
+
+                      .FirstOrDefault();
+      var pro = _apiDemoDbClass.products
+                      .Where( b => b.id == orderproducts.product_id )
+
+                      .FirstOrDefault();
+
+      //_apiDemoDbClass.Orders.Include( h => h.user);
+      //var b = _apiDemoDbClass.Orders.Include( a => a.user ).FirstOrDefault( a => a.user_id == order.user_id );
+      orderproducts.order = ord; 
+      orderproducts.product = pro;
+
+      _apiDemoDbClass.orderProducts.Add( orderproducts );
+
       SqlConnection con = new SqlConnection( _configuration.GetConnectionString( "DbConnection" ).ToString() );
       SqlDataAdapter adapter = new SqlDataAdapter( "select available_quantity from products where products.id=" + orderproducts.product_id, con );
       DataTable dt = new DataTable();

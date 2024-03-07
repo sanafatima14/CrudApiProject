@@ -27,10 +27,21 @@ namespace CrudApiProject.Models
 
 
       modelBuilder.Entity<Users>()
-         .HasOne<Orders>()
+         .HasMany<Orders>()
          .WithOne( e => e.user ).OnDelete( DeleteBehavior.ClientCascade )
-     .HasForeignKey<Orders>( e => e.user_id )
+     .HasForeignKey( e => e.user_id )
          .IsRequired( false );
+
+      modelBuilder.Entity<Products>()
+            .HasMany<order_products>()
+            .WithOne( c => c.product ).OnDelete( DeleteBehavior.ClientCascade )
+            .HasForeignKey( p => p.product_id );
+      modelBuilder.Entity<Orders>()
+            .HasMany<order_products>()
+            .WithOne( c => c.order ).OnDelete( DeleteBehavior.ClientCascade )
+            .HasForeignKey( p => p.order_id );
+
+
 
 
 
