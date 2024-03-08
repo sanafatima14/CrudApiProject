@@ -47,7 +47,7 @@ namespace CrudApiProject.Migrations
 
                     b.HasIndex("user_id");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("CrudApiProject.Models.Products", b =>
@@ -79,7 +79,7 @@ namespace CrudApiProject.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("products");
+                    b.ToTable("products", (string)null);
                 });
 
             modelBuilder.Entity("CrudApiProject.Models.Report", b =>
@@ -102,7 +102,7 @@ namespace CrudApiProject.Migrations
                     b.Property<int>("product_quantity")
                         .HasColumnType("int");
 
-                    b.ToTable("Report");
+                    b.ToTable("Report", (string)null);
                 });
 
             modelBuilder.Entity("CrudApiProject.Models.Role", b =>
@@ -124,7 +124,7 @@ namespace CrudApiProject.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("CrudApiProject.Models.UserRole", b =>
@@ -149,7 +149,7 @@ namespace CrudApiProject.Migrations
                     b.HasIndex("user_id")
                         .IsUnique();
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("CrudApiProject.Models.Users", b =>
@@ -193,7 +193,7 @@ namespace CrudApiProject.Migrations
                     b.HasIndex("username")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("CrudApiProject.Models.order_products", b =>
@@ -211,7 +211,7 @@ namespace CrudApiProject.Migrations
 
                     b.HasIndex("product_id");
 
-                    b.ToTable("orderProducts");
+                    b.ToTable("orderProducts", (string)null);
                 });
 
             modelBuilder.Entity("CrudApiProject.Models.Orders", b =>
