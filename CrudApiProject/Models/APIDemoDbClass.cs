@@ -11,7 +11,7 @@ namespace CrudApiProject.Models
     public DbSet<Products> products { get; set; }
     public DbSet<Orders> Orders { get; set; }
     public DbSet<order_products> orderProducts { get; set; }
-    public DbSet<Report> report { get; set; }
+    //public DbSet<Report> report { get; set; }
 
     public DbSet<Role> Roles { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
@@ -21,7 +21,7 @@ namespace CrudApiProject.Models
             .HasKey( m => new { m.order_id, m.product_id } );
       modelBuilder.Entity<Users>().HasIndex( s => s.email ).IsUnique();
       modelBuilder.Entity<Users>().HasIndex( s => s.username ).IsUnique();
-      modelBuilder.Entity<Report>().HasNoKey();
+      
 
 
 

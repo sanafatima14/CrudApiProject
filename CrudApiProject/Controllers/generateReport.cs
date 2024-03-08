@@ -34,35 +34,42 @@ namespace CrudApiProject.Controllers
       SqlDataAdapter adapter = new SqlDataAdapter( "Exec generateReportComplete" , con );
       DataTable dt = new DataTable();
       adapter.Fill( dt );
-      List<Report> report = new List<Report>();
+
+      var data = dt.Rows.OfType<DataRow>()
+               .Select( row => dt.Columns.OfType<DataColumn>()
+                   .ToDictionary( col => col.ColumnName, c => row[ c ] ) );
+      return System.Text.Json.JsonSerializer.Serialize( data );
 
 
-      Response response = new Response();
+      //List<Report> report = new List<Report>();
 
-      if ( dt.Rows.Count > 0 )
-      {
-        for ( int i = 0; i < dt.Rows.Count; i++ )
-        {
-          Report u = new Report();
-          u.product_quantity = Convert.ToInt32( dt.Rows[ i ][ "Product_quantity" ] );
-          u.first_name = Convert.ToString( dt.Rows[ i ][ "first_name" ] );
-          u.last_name = Convert.ToString( dt.Rows[ i ][ "last_name" ] );
-          u.name = Convert.ToString( dt.Rows[ i ][ "name" ] );
-          u.order_id = Convert.ToInt32( dt.Rows[ i ][ "orderID" ] );
 
-          report.Add( u );
-        }
-      }
-      if ( report.Count > 0 )
-      {
-        return JsonConvert.SerializeObject( report );
-      }
-      else
-      {
-        response.StatusCode = 100;
-        response.ErrorMessage = "No data found";
-        return JsonConvert.SerializeObject( response );
-      }
+      //Response response = new Response();
+
+      //if ( dt.Rows.Count > 0 )
+      //{
+      //  for ( int i = 0; i < dt.Rows.Count; i++ )
+      //  {
+      //    Report u = new Report();
+      //    u.product_quantity = Convert.ToInt32( dt.Rows[ i ][ "Product_quantity" ] );
+      //    u.first_name = Convert.ToString( dt.Rows[ i ][ "first_name" ] );
+      //    u.last_name = Convert.ToString( dt.Rows[ i ][ "last_name" ] );
+      //    u.name = Convert.ToString( dt.Rows[ i ][ "name" ] );
+      //    u.order_id = Convert.ToInt32( dt.Rows[ i ][ "orderID" ] );
+
+      //    report.Add( u );
+      //  }
+      //}
+      //if ( report.Count > 0 )
+      //{
+      //  return JsonConvert.SerializeObject( report );
+      //}
+      //else
+      //{
+      //  response.StatusCode = 100;
+      //  response.ErrorMessage = "No data found";
+      //  return JsonConvert.SerializeObject( response );
+      //}
     }
 
 
@@ -77,34 +84,14 @@ namespace CrudApiProject.Controllers
       SqlDataAdapter adapter = new SqlDataAdapter( "Exec generateReport @name="+ productname + " ,@username ="+username, con);
       DataTable dt = new DataTable(); 
       adapter.Fill(dt);
-      List<Report> report= new List<Report>();
 
 
-      Response response = new Response();
+      var data = dt.Rows.OfType<DataRow>()
+           .Select( row => dt.Columns.OfType<DataColumn>()
+               .ToDictionary( col => col.ColumnName, c => row[ c ] ) );
+      return System.Text.Json.JsonSerializer.Serialize( data );
 
-      if(dt.Rows.Count > 0)
-      {
-        for(int i = 0; i < dt.Rows.Count; i++ )
-        {
-          Report u = new Report();
-          u.product_quantity = Convert.ToInt32( dt.Rows[ i ][ "product_quantity" ] );
-          u.first_name = Convert.ToString( dt.Rows[ i ][ "first_name" ] );
-          u.last_name = Convert.ToString( dt.Rows[ i ][ "last_name" ] );
-          u.name = Convert.ToString( dt.Rows[ i ][ "name" ] );
-          u.order_id = Convert.ToInt32( dt.Rows[ i ][ "orderID" ] );
-          report.Add( u );  
-        }
-      }
-      if(report.Count > 0)
-      {
-        return JsonConvert.SerializeObject( report );
-      }
-      else
-      {
-        response.StatusCode = 100;
-        response.ErrorMessage = "No data found";
-        return JsonConvert.SerializeObject( response );
-      }
+
     }
 
     [HttpGet]
@@ -116,33 +103,11 @@ namespace CrudApiProject.Controllers
       SqlDataAdapter adapter = new SqlDataAdapter( "Exec generateReportbyproductname @name=" + productname , con );
       DataTable dt = new DataTable();
       adapter.Fill( dt );
-      List<Report> report = new List<Report>();
+      var data = dt.Rows.OfType<DataRow>()
+         .Select( row => dt.Columns.OfType<DataColumn>()
+             .ToDictionary( col => col.ColumnName, c => row[ c ] ) );
+      return System.Text.Json.JsonSerializer.Serialize( data );
 
-      Response response = new Response();
-
-      if ( dt.Rows.Count > 0 )
-      {
-        for ( int i = 0; i < dt.Rows.Count; i++ )
-        {
-          Report u = new Report();
-          u.product_quantity = Convert.ToInt32( dt.Rows[ i ][ "product_quantity" ] );
-          u.first_name = Convert.ToString( dt.Rows[ i ][ "first_name" ] );
-          u.last_name = Convert.ToString( dt.Rows[ i ][ "last_name" ] );
-          u.name = Convert.ToString( dt.Rows[ i ][ "name" ] );
-          u.order_id = Convert.ToInt32( dt.Rows[ i ][ "orderID" ] );
-          report.Add( u );
-        }
-      }
-      if ( report.Count > 0 )
-      {
-        return JsonConvert.SerializeObject( report );
-      }
-      else
-      {
-        response.StatusCode = 100;
-        response.ErrorMessage = "No data found";
-        return JsonConvert.SerializeObject( response );
-      }
     }
 
     [HttpGet]
@@ -152,38 +117,16 @@ namespace CrudApiProject.Controllers
     {
 
       SqlConnection con = new SqlConnection( _configuration.GetConnectionString( "DbConnection" ).ToString() );
-      SqlDataAdapter adapter = new SqlDataAdapter( "Exec generateReportByDateRange @date1=" + date1+ ", @date2="+date2, con );
+      SqlDataAdapter adapter = new SqlDataAdapter( "Exec generateReportByDateRange @date1='" + date1+"'"+ ", @date2='"+date2+"'", con );
      
       DataTable dt = new DataTable();
       adapter.Fill( dt );
-      List<Report> report = new List<Report>();
 
-      Response response = new Response();
-
-      if ( dt.Rows.Count > 0 )
-      {
-        for ( int i = 0; i < dt.Rows.Count; i++ )
-        {
-          Report u = new Report();
-          u.product_quantity = Convert.ToInt32( dt.Rows[ i ][ "product_quantity" ] );
-          u.first_name = Convert.ToString( dt.Rows[ i ][ "first_name" ] );
-          u.last_name = Convert.ToString( dt.Rows[ i ][ "last_name" ] );
-          u.name = Convert.ToString( dt.Rows[ i ][ "name" ] );
-          u.order_id = Convert.ToInt32( dt.Rows[ i ][ "orderID" ] );
-
-          report.Add( u );
-        }
-      }
-      if ( report.Count > 0 )
-      {
-        return JsonConvert.SerializeObject( report );
-      }
-      else
-      {
-        response.StatusCode = 100;
-        response.ErrorMessage = "No data found";
-        return JsonConvert.SerializeObject( response );
-      }
+      var data = dt.Rows.OfType<DataRow>()
+         .Select( row => dt.Columns.OfType<DataColumn>()
+             .ToDictionary( col => col.ColumnName, c => row[ c ] ) );
+      return System.Text.Json.JsonSerializer.Serialize( data );
+    
     }
 
   }
