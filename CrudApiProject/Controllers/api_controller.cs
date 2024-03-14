@@ -16,15 +16,15 @@ namespace CrudApiProject.Controllers
   [Route( "api/demo" )]
   [ApiController]
   [Authorize]
-  public class DemoApiController : ControllerBase
+  public class api_controller : ControllerBase
   {
-    private readonly APIDemoDbClass _apiDemoDbClass;
+    private readonly api_demo_db_class _apiDemoDbClass;
 
    
     public readonly IConfiguration _configuration;
  
 
-    public DemoApiController( APIDemoDbClass apiDemoDbClass , IConfiguration configuration )
+    public api_controller( api_demo_db_class apiDemoDbClass , IConfiguration configuration )
     {
       _apiDemoDbClass = apiDemoDbClass;
       _configuration = configuration;
@@ -34,7 +34,7 @@ namespace CrudApiProject.Controllers
     [Route( "get-users-list" )]
     public async Task<IActionResult> GetAsync()
     {
-      var users = await _apiDemoDbClass.Users.ToListAsync();
+      var users = await _apiDemoDbClass.users.ToListAsync();
       return Ok( users );
     }
     [HttpGet]
@@ -42,7 +42,7 @@ namespace CrudApiProject.Controllers
     [Route( "get-users-by-id/{UserId}" )]
     public async Task<IActionResult> GetUserByIdAsync( int UserId )
     {
-      var user = await _apiDemoDbClass.Users.FindAsync( UserId );
+      var user = await _apiDemoDbClass.users.FindAsync( UserId );
       return Ok( user );
     }
 
@@ -51,9 +51,9 @@ namespace CrudApiProject.Controllers
     
     [Route( "create-user" )]
     [Authorize( Roles = "Admin" )]
-    public  Users PostAsync( Users user )
+    public  users PostAsync( users user )
     {
-      var u = _apiDemoDbClass.Users.Add( user );
+      var u = _apiDemoDbClass.users.Add( user );
       _apiDemoDbClass.SaveChanges();
       return u.Entity;
       //_apiDemoDbClass.Users.Add( user );
@@ -65,9 +65,9 @@ namespace CrudApiProject.Controllers
     
     [Route( "update-user" )]
     [Authorize( Roles = "Admin" )]
-    public async Task<IActionResult> PutAsync( Users userToUpdate )
+    public async Task<IActionResult> PutAsync( users userToUpdate )
     {
-      _apiDemoDbClass.Users.Update( userToUpdate );
+      _apiDemoDbClass.users.Update( userToUpdate );
       await _apiDemoDbClass.SaveChangesAsync();
       return NoContent();
     }
@@ -75,7 +75,7 @@ namespace CrudApiProject.Controllers
     [Route( "delete-user" )]
     public async Task<IActionResult> DeleteAsync( int UserId )
     {
-      var userToDelete = await _apiDemoDbClass.Users.FindAsync( UserId );
+      var userToDelete = await _apiDemoDbClass.users.FindAsync( UserId );
       if( userToDelete == null ) { return NotFound(); }
       _apiDemoDbClass.Remove( userToDelete );
       await _apiDemoDbClass.SaveChangesAsync();
@@ -101,7 +101,7 @@ namespace CrudApiProject.Controllers
     [HttpPost]
     [Authorize( Roles = "Admin" )]
     [Route( "create-product" )]
-    public async Task<IActionResult> PostProductAsync( Products product )
+    public async Task<IActionResult> PostProductAsync( products product )
     {
       _apiDemoDbClass.products.Add( product );
       await _apiDemoDbClass.SaveChangesAsync();
@@ -111,7 +111,7 @@ namespace CrudApiProject.Controllers
     [HttpPut]
     [Authorize( Roles = "Admin" )]
     [Route( "update-product" )]
-    public async Task<IActionResult> PutProductAsync( Products productToUpdate )
+    public async Task<IActionResult> PutProductAsync( products productToUpdate )
     {
       _apiDemoDbClass.products.Update( productToUpdate );
       await _apiDemoDbClass.SaveChangesAsync();
@@ -134,7 +134,7 @@ namespace CrudApiProject.Controllers
     [Route( "get-orders-list" )]
     public async Task<IActionResult> GetOrdersAsync()
     {
-      var orders = await _apiDemoDbClass.Orders.ToListAsync();
+      var orders = await _apiDemoDbClass.orders.ToListAsync();
       return Ok( orders );
     }
 
@@ -150,12 +150,12 @@ namespace CrudApiProject.Controllers
     [HttpPost]
     [Authorize( Roles = "Admin" )]
     [Route( "create-order" )]
-    public async Task<IActionResult> PostOrderAsync( Orders order )
+    public async Task<IActionResult> PostOrderAsync( orders order )
       
     {
 
-      var blog1 = _apiDemoDbClass.Users
-                      .Where( b => b.Id == order.user_id )
+      var blog1 = _apiDemoDbClass.users
+                      .Where( b => b.id == order.user_id )
                       
                       .FirstOrDefault();
 
@@ -163,7 +163,7 @@ namespace CrudApiProject.Controllers
       //var b = _apiDemoDbClass.Orders.Include( a => a.user ).FirstOrDefault( a => a.user_id == order.user_id );
       order.user = blog1; // Access the related book
 
-      _apiDemoDbClass.Orders.Add( order );
+      _apiDemoDbClass.orders.Add( order );
       await _apiDemoDbClass.SaveChangesAsync();
           return Created( $"/order/{order.id}", order );
         
@@ -172,9 +172,9 @@ namespace CrudApiProject.Controllers
 
     [HttpPut]
     [Route( "update-order" )]
-    public async Task<IActionResult> PutOrderAsync( Orders orderToUpdate )
+    public async Task<IActionResult> PutOrderAsync( orders orderToUpdate )
     {
-      _apiDemoDbClass.Orders.Update( orderToUpdate );
+      _apiDemoDbClass.orders.Update( orderToUpdate );
       await _apiDemoDbClass.SaveChangesAsync();
       return NoContent();
     }
@@ -183,25 +183,23 @@ namespace CrudApiProject.Controllers
     [HttpPut]
     [Authorize( Roles = "Admin" )]
     [Route( "update-order/{orderid}/{status}" )]
-    public async Task<IActionResult> PutOrderstatusAsync( int orderid, String status )
+    public async Task<IActionResult> PutOrderstatusAsync( int orderid, int status_id )
     {
-      Orders order = await _apiDemoDbClass.Orders.FindAsync( orderid );
+      orders order = await _apiDemoDbClass.orders.FindAsync( orderid );
       
-      order.status = status;
+      order.status_id = status_id;
 
-      _apiDemoDbClass.Orders.Update( order );
+      _apiDemoDbClass.orders.Update( order );
       await _apiDemoDbClass.SaveChangesAsync();
       return Ok(  order );
     }
-    /// </summary>
-    /// 
-    /// <returns></returns>
+
 
     [HttpDelete]
     [Route( "delete-order" )]
     public async Task<IActionResult> DeleteOrderAsync( int OrderId )
     {
-      var orderToDelete = await _apiDemoDbClass.Orders.FindAsync( OrderId );
+      var orderToDelete = await _apiDemoDbClass.orders.FindAsync( OrderId );
       if ( orderToDelete == null ) { return NotFound(); }
       _apiDemoDbClass.Remove( orderToDelete );
       await _apiDemoDbClass.SaveChangesAsync();
@@ -218,7 +216,7 @@ namespace CrudApiProject.Controllers
     [Route( "get-order_products-list" )]
     public async Task<IActionResult> GetOrderProductsAsync()
     {
-      var orderproducts = await _apiDemoDbClass.orderProducts.ToListAsync();
+      var orderproducts = await _apiDemoDbClass.order_products.ToListAsync();
       return Ok( orderproducts );
     }
 
@@ -230,7 +228,7 @@ namespace CrudApiProject.Controllers
       {
         return BadRequest( ModelState );
       }
-      var orderproducts = await _apiDemoDbClass.orderProducts.FindAsync( Order_id, Product_id );
+      var orderproducts = await _apiDemoDbClass.order_products.FindAsync( Order_id, Product_id );
       return Ok( orderproducts );
 
       }
@@ -242,7 +240,7 @@ namespace CrudApiProject.Controllers
     {
 
 
-      var ord = _apiDemoDbClass.Orders
+      var ord = _apiDemoDbClass.orders
                       .Where( b => b.id == orderproducts.order_id )
 
                       .FirstOrDefault();
@@ -256,13 +254,13 @@ namespace CrudApiProject.Controllers
       orderproducts.order = ord; 
       orderproducts.product = pro;
 
-      _apiDemoDbClass.orderProducts.Add( orderproducts );
+      _apiDemoDbClass.order_products.Add( orderproducts );
 
       SqlConnection con = new SqlConnection( _configuration.GetConnectionString( "DbConnection" ).ToString() );
       SqlDataAdapter adapter = new SqlDataAdapter( "select available_quantity from products where products.id=" + orderproducts.product_id, con );
       DataTable dt = new DataTable();
       adapter.Fill( dt );
-      Models.Response response = new Models.Response();
+      Models.responses response = new Models.responses();
       if ( dt.Rows.Count > 0 )
 
 
@@ -272,15 +270,15 @@ namespace CrudApiProject.Controllers
 
         if ( dt.Rows[0].Field<int >("available_quantity")>orderproducts.product_quantity )
         {
-          _apiDemoDbClass.orderProducts.Add( orderproducts );
+          _apiDemoDbClass.order_products.Add( orderproducts );
           await _apiDemoDbClass.SaveChangesAsync();
           return Created( $"/orderProduct-by-id/{orderproducts.order_id}", orderproducts );
         }
       }
       else
       {
-        response.StatusCode = 100;
-        response.ErrorMessage = "No data found";
+        response.status_code = 100;
+        response.error_message = "No data found";
 
       }
       return BadRequest( response );
@@ -301,7 +299,7 @@ namespace CrudApiProject.Controllers
     [Route( "update-order_products" )]
     public async Task<IActionResult> PutOrderProductsAsync( order_products orderProductsToUpdate )
     {
-      _apiDemoDbClass.orderProducts.Update( orderProductsToUpdate );
+      _apiDemoDbClass.order_products.Update( orderProductsToUpdate );
       await _apiDemoDbClass.SaveChangesAsync();
       return NoContent();
     }
@@ -309,7 +307,7 @@ namespace CrudApiProject.Controllers
     [Route( "delete-order_products/{Order_id}/{Product_id}" )]
     public async Task<IActionResult> DeleteOrderProductsAsync( int Order_id, int Product_id )
     {
-      var orderProductsToDelete = await _apiDemoDbClass.orderProducts.FindAsync( Order_id, Product_id );
+      var orderProductsToDelete = await _apiDemoDbClass.order_products.FindAsync( Order_id, Product_id );
       if ( orderProductsToDelete == null ) { return NotFound(); }
       _apiDemoDbClass.Remove( orderProductsToDelete );
       await _apiDemoDbClass.SaveChangesAsync();

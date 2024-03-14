@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CrudApiProject.Models
 {
-  public class Products
+  public class products
   {
     [Key]
     public int id { get; set; }

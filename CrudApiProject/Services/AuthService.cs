@@ -1,5 +1,4 @@
-﻿
-using CrudApiProject.Interfaces;
+﻿using CrudApiProject.Interfaces;
 using CrudApiProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,45 +10,45 @@ namespace CrudApiProject.Services
 {
   public class AuthService : IAuthService
   {
-    private readonly APIDemoDbClass _context;
+    private readonly api_demo_db_class _context;
     private readonly IConfiguration _configuration;
-    public AuthService( APIDemoDbClass context, IConfiguration configuration )
+    public AuthService( api_demo_db_class context, IConfiguration configuration )
     {
       _context = context;
       _configuration = configuration;
     }
 
-    public Role AddRole( Role role )
+    public role AddRole( role role )
     {
-      var addedRole = _context.Roles.Add( role );
+      var addedRole = _context.roles.Add( role );
       _context.SaveChanges();
       return addedRole.Entity;
     }
 
-    public Users AddUser( Users user )
+    public users AddUser( users user )
     {
-      var addedUser = _context.Users.Add( user );
+      var addedUser = _context.users.Add( user );
        _context.SaveChanges();
       return addedUser.Entity;
     }
 
-    public bool AssignRoleToUser( AddUserRole obj )
+    public bool AssignRoleToUser( add_user_role obj )
     {
       try
       {
-        var addRoles = new List<UserRole>();
-        var user = _context.Users.SingleOrDefault( s => s.Id == obj.UserId );
+        var addRoles = new List<user_role>();
+        var user = _context.users.SingleOrDefault( s => s.id == obj.UserId );
         if ( user == null )
           throw new Exception( "user is not valid" );
 
         foreach ( int role in obj.RoleIds )
         {
-          var userRole = new UserRole();
+          var userRole = new user_role();
           userRole.role_id = role;
-          userRole.user_id = user.Id; 
+          userRole.user_id = user.id; 
           addRoles.Add( userRole );
         }
-        _context.UserRoles.AddRange( addRoles );
+        _context.user_roles.AddRange( addRoles );
         _context.SaveChanges();
         return true;
       }
@@ -60,24 +59,24 @@ namespace CrudApiProject.Services
 
     }
 
-    public string Login( LoginRequest loginRequest )
+    public string Login( login_request loginRequest )
     {
       
       if ( loginRequest.username != null && loginRequest.password != null )
       {
-        var user = _context.Users.SingleOrDefault( s => s.username == loginRequest.username && s.password == loginRequest.password );
+        var user = _context.users.SingleOrDefault( s => s.username == loginRequest.username && s.password == loginRequest.password );
         if ( user != null )
         {
           var claims = new List<Claim> {
                         new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
-                        new Claim("Id", user.Id.ToString()),
+                        new Claim("Id", user.id.ToString()),
                         new Claim("UserName", user.first_name)
           };
 
 
-          var userRoles = _context.UserRoles.Where( u => u.user_id == user.Id );
+          var userRoles = _context.user_roles.Where( u => u.user_id == user.id );
           var roleIds = userRoles.Select( s => s.role_id ).ToList();
-          var roles = _context.Roles.Where( r => roleIds.Contains( r.id ) ).ToList();
+          var roles = _context.roles.Where( r => roleIds.Contains( r.id ) ).ToList();
           foreach ( var role in roles )
           {
             claims.Add( new Claim( ClaimTypes.Role, role.name ) );

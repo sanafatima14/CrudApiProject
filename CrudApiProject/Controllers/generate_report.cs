@@ -13,11 +13,11 @@ namespace CrudApiProject.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  public class generateReport :ControllerBase
+  public class generate_report :ControllerBase
   {
-    private readonly APIDemoDbClass _apiDemoDbClass;
+    private readonly api_demo_db_class _apiDemoDbClass;
     public readonly IConfiguration _configuration;
-    public generateReport( APIDemoDbClass apiDemoDbClass, IConfiguration configuration )
+    public generate_report( api_demo_db_class apiDemoDbClass, IConfiguration configuration )
     {
       _apiDemoDbClass = apiDemoDbClass;
       _configuration = configuration;

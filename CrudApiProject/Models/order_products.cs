@@ -10,15 +10,15 @@ namespace CrudApiProject.Models
   public class order_products
   {
    
-    [ForeignKey( "Orders" )]
+    [ForeignKey( "orders" )]
     public int order_id { get; set; }
     [System.Text.Json.Serialization.JsonIgnore( Condition = JsonIgnoreCondition.Always )]
-    public virtual Orders? order { get; set; }
-    [ForeignKey( "Products" )]
-  
+    public virtual orders? order { get; set; }
+
+    [ForeignKey( "products" )]
     public int product_id  { get; set; }
     [System.Text.Json.Serialization.JsonIgnore( Condition = JsonIgnoreCondition.Always )]
-    public virtual Products? product { get; set; }
+    public virtual products? product { get; set; }
     public int product_quantity { get; set; }
   }
 }

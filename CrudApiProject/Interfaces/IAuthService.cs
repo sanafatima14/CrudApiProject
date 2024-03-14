@@ -5,10 +5,10 @@ namespace CrudApiProject.Interfaces
 {
   public interface IAuthService
   {
-    Users AddUser( Users user );
-    string Login( Models.LoginRequest loginRequest );
-    Role AddRole( Role role );
-    bool AssignRoleToUser( AddUserRole obj );
+    users AddUser( users user );
+    string Login( Models.login_request loginRequest );
+    role AddRole( role role );
+    bool AssignRoleToUser( add_user_role obj );
 
   }
 }
