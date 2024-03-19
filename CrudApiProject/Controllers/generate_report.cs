@@ -1,17 +1,16 @@
-﻿using CrudApiProject.Models;
-
+﻿using CrudApiProject.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+
 using System.Data;
-using System.Data.SqlClient;
+
 
 
 namespace CrudApiProject.Controllers
 {
-  [Route("api/[controller]")]
+    [Route("api/[controller]")]
   [ApiController]
   public class generate_report :ControllerBase
   {
@@ -41,35 +40,7 @@ namespace CrudApiProject.Controllers
       return System.Text.Json.JsonSerializer.Serialize( data );
 
 
-      //List<Report> report = new List<Report>();
-
-
-      //Response response = new Response();
-
-      //if ( dt.Rows.Count > 0 )
-      //{
-      //  for ( int i = 0; i < dt.Rows.Count; i++ )
-      //  {
-      //    Report u = new Report();
-      //    u.product_quantity = Convert.ToInt32( dt.Rows[ i ][ "Product_quantity" ] );
-      //    u.first_name = Convert.ToString( dt.Rows[ i ][ "first_name" ] );
-      //    u.last_name = Convert.ToString( dt.Rows[ i ][ "last_name" ] );
-      //    u.name = Convert.ToString( dt.Rows[ i ][ "name" ] );
-      //    u.order_id = Convert.ToInt32( dt.Rows[ i ][ "orderID" ] );
-
-      //    report.Add( u );
-      //  }
-      //}
-      //if ( report.Count > 0 )
-      //{
-      //  return JsonConvert.SerializeObject( report );
-      //}
-      //else
-      //{
-      //  response.StatusCode = 100;
-      //  response.ErrorMessage = "No data found";
-      //  return JsonConvert.SerializeObject( response );
-      //}
+    
     }
 
 
